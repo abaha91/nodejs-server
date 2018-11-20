@@ -1,37 +1,39 @@
-const http = require('http');
+const serverModule = function (params) {
+  const http = require('http');
 
-let iterations = 10;
-let timerEndTime = 15000;
+  let consoleTimeInterval = params.argv.interval;
+  let timerEndTime = params.argv.timeout;
 
+  startServer();
 
-function viewTimeInConsole() {
-  let startTime = new Date().getTime();
-  let timerIds = [];
-
-  for (let i = 0; i <= iterations; i++) {
+  function viewTimeInConsole(request, response) {
     let timerId = setInterval(() => {
       console.log(returnTime())
-    }, 5000);
+    }, consoleTimeInterval);
+
+    setTimeout(() => {
+      clearInterval(timerId);
+      response.end('Текущая дата: ' + returnTime());
+      return;
+    }, timerEndTime)
   }
 
-
-
-
-  setTimeout(() => {
-    clearInterval(timerId);
-    return;
-  }, timerTime)
-}
-
-function returnTime() {
+  function returnTime() {
     return new Date().toISOString();
-}
+  }
 
-http.createServer(function(request, response) {
-    if (request.method == 'GET') {
-        viewTimeInConsole();
-    } else {
+  function startServer() {
+    http.createServer(function(request, response) {
+      if (request.method == 'GET') {
+        viewTimeInConsole(request, response);
+      } else {
         console.log('request method is not supported, send GET request.');
-    }
-}).listen(8080);
+      }
+    }).listen(8080);
+  };
+};
+
+
+module.exports = serverModule;
+
 
