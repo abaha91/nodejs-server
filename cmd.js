@@ -20,7 +20,7 @@ yargs
           default: 10000,
       })
   }, function (argv) {
-      console.log('Server started');
+      console.log('Server started at port 8080');
       serverModule(yargs);
   })
   .help()
