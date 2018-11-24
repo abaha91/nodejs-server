@@ -13,10 +13,9 @@ const serverModule = function (params) {
 
     setTimeout(() => {
       clearInterval(timerId);
-      response.writeHead(200, {
-        'Content-Type': 'text/plain',
-        'encoding': 'utf-8',
-      });
+        response.writeHead(200, {
+            "Content-Type": "text/html; charset=utf-8"
+        });
       response.end('Текущая дата: ' + returnTime());
       return;
     }, timerEndTime)
